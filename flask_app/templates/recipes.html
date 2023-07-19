@@ -13,7 +13,7 @@
             <div class=" d-flex justify-content-between">
                 <h1>Welcome, {{logged_user.first_name}}!</h1>
                 <div>
-                    <a href="/recipes/create" class="btn btn-primary">Create</a>
+                    <a href="/recipes/new" class="btn btn-primary">Create</a>
                     <a href="/logout" class="btn btn-danger">Logout</a>
                     </div>
                 </div>
@@ -35,7 +35,8 @@
                                     <td>{{one_recipe.maker.first_name}} {{one_recipe.maker.last_name}}</td>
                                     <td>
                                         <a href="/recipes/{{one_recipe.id}}/view">View Recipe</a>
-                                        {% if session['user_id'] == one_recipe.id %}
+                                        <!-- TODO: fix edit and delete -->
+                                        {% if session['user_id'] == one_recipe.user_id %}
                                             <a href="/recipes{{one_recipe.id}}/edit">Edit</a>
                                             <a href="/recipes{{one_recipe.id}}/delete">Delete</a>
                                         {% endif %}

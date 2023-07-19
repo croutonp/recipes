@@ -17,6 +17,28 @@
             </div>
         </div>
     </div>
+    <form action="/recipes/create" method="POST">
+        {% for message in get_flashed_messages() %}
+            <p class="text-danger">{{message}}</p>            
+        {% endfor %}
+        <label for="name">Name</label>
+        <input type="text" name = "name" id = "name">
+        <label for="description">Description</label>
+        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+        <label for="instructions">Instructions</label>
+        <textarea name="instructions" id="instructions" cols="30" rows="10"></textarea>
+    <div>
+        <label for="date_made">Date Cooked/Made:</label>
+        <input type="date" name="date_made" id="date_made">
+        <p>Under 30 minutes?</p>
+        <label for="yes">Yes</label>
+        <input type="radio" name="under_30" id="yes" value="1">
+        <label for="no">No</label>
+        <input type="radio" name="under_30" id="no" value="0">
+
+    </div>
+    <button class="btn btn-primary">Submit</button>
+    </form>
 
 
 

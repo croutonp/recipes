@@ -16,8 +16,21 @@ def dashboard():
     all_recipes = Recipe.get_all()
     return render_template('recipes.html',logged_user=logged_user, all_recipes=all_recipes)
 
-@app.route('/recipes/create')
+@app.route('/recipes/new')
 def new_recipe():
     if 'user_id' not in session:
         return redirect('/')
     return render_template('create_recipe.html')
+
+@app.route('/recipes/create', methods = ['POST'])
+def create_recipe():
+    if 'user_id' not in session:
+        return redirect('/')
+    if not Recipe.is_valid(request.form):
+        return redirect('/recipes/new')
+    recipe_data = {
+        **request.form,
+        'user_id': session['user_id']
+    }
+    Recipe.create(recipe_data)
+    return redirect('/recipes')

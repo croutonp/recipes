@@ -21,8 +21,8 @@ class Recipe:
     @classmethod
     def create(cls, data):
         query="""
-            INSERT INTO recipes (name, description, instructions, date_made, under_30)
-            VALUES (%(name)s, %(description)s, %(instructions)s, %(date_made)s, %(under_30)s)
+            INSERT INTO recipes (name, description, instructions, date_made, under_30, user_id)
+            VALUES (%(name)s, %(description)s, %(instructions)s, %(date_made)s, %(under_30)s, %(user_id)s)
         """
         return connectToMySQL(DATABASE).query_db(query, data)
 
@@ -47,3 +47,24 @@ class Recipe:
                 this_recipe.maker = this_user
                 all_recipes.append(this_recipe)
         return all_recipes
+
+
+    @staticmethod
+    def is_valid(data):
+        is_valid = True
+        if len(data['name']) <1:
+            flash('Name required')
+            is_valid = False
+        if len(data['description']) <1:
+            flash('Description required')
+            is_valid = False
+        if len(data['instructions']) <1:
+            flash('Instructions required')
+            is_valid = False
+        if len(data['date_made']) <1:
+            flash('Date required')
+            is_valid = False
+        if 'under_30' not in data:
+            flash('Cooking time required')
+            is_valid = False
+        return is_valid
