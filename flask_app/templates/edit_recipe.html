@@ -13,35 +13,36 @@
     <div class="container">
         <!-- HEADER -->
         <div class="d-flex justify-content-between">
-            <h1>Add a New Recipe!</h1>
+            <h1>Edit your Recipe!</h1>
             <div>
                 <a href="/recipes" class="btn btn-primary">Back to Recipes</a>
                 <a href="/logout" class="btn btn-danger">logout</a>
             </div>
         </div>
     </div>
-    <!-- CREATE FORM -->
-    <form action="/recipes/create" method="POST">
+    <!-- UPDATE FORM -->
+    <form action="/recipes/update/{{one_recipe.id}}" method="POST">
         {% for message in get_flashed_messages() %}
         <p class="text-danger">{{message}}</p>
         {% endfor %}
         <label for="name">Name</label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" value="{{one_recipe.name}}">
         <label for="description">Description</label>
-        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+        <textarea name="description" id="description" cols="30" rows="10">{{one_recipe.description}}</textarea>
         <label for="instructions">Instructions</label>
-        <textarea name="instructions" id="instructions" cols="30" rows="10"></textarea>
+        <textarea name="instructions" id="instructions" cols="30" rows="10">{{one_recipe.instructions}}</textarea>
         <div>
             <label for="date_made">Date Cooked/Made:</label>
-            <input type="date" name="date_made" id="date_made">
+            <input type="date" name="date_made" id="date_made" value="{{one_recipe.date_made}}">
             <p>Under 30 minutes?</p>
             <label for="yes">Yes</label>
-            <input type="radio" name="under_30" id="yes" value="1">
+            <input type="radio" name="under_30" id="yes" value="1" {% if one_recipe.under_30==1 %}checked{% endif %}>
+
             <label for="no">No</label>
-            <input type="radio" name="under_30" id="no" value="0">
+            <input type="radio" name="under_30" id="no" value="0" {% if one_recipe.under_30==0 %}checked{% endif %}>
 
         </div>
-        <button class="btn btn-primary">Submit</button>
+        <button class="btn btn-primary">Update</button>
     </form>
 
 

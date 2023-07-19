@@ -16,6 +16,7 @@ class Recipe:
         self.instructions = data['instructions']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.user_id = data['user_id']
     
     
     @classmethod
@@ -39,7 +40,7 @@ class Recipe:
                 this_recipe = cls(row)
                 user_data = {
                     **row,
-                    'id': row['users.id'],
+                    'id': row['users.id'],                    
                     'created_at': row['users.created_at'],
                     'updated_at': row['users.updated_at']
                 }
@@ -47,6 +48,49 @@ class Recipe:
                 this_recipe.maker = this_user
                 all_recipes.append(this_recipe)
         return all_recipes
+
+    @classmethod
+    def get_one(cls, data):
+        query="""
+        SELECT * FROM recipes JOIN users ON recipes.user_id = users.id WHERE recipes.id = %(id)s
+        """
+
+        results = connectToMySQL(DATABASE).query_db(query,data)
+        one_recipe = []
+        if results:
+                row = results[0]
+                this_recipe = cls(row)
+                user_data = {
+                    **row,
+                    'id' : row['users.id'],
+                    'created_at': row['users.created_at'],
+                    'updated_at': row['users.updated_at']
+                }
+                this_user = user_model.User(user_data)
+                this_recipe.maker = this_user
+                return this_recipe
+        return False
+    @classmethod  
+    def update(cls, data):
+        query="""
+            UPDATE recipes 
+            SET 
+            name = %(name)s, 
+            description = %(description)s,
+            instructions =  %(instructions)s, 
+            date_made = %(date_made)s, 
+            under_30 = %(under_30)s
+            WHERE recipes.id = %(id)s;
+        """ 
+        return connectToMySQL(DATABASE).query_db(query, data)
+
+    @classmethod
+    def delete(cls,data):
+        query="""
+        DELETE FROM recipes WHERE id = %(id)s;
+        """
+        return connectToMySQL(DATABASE).query_db(query,data)
+
 
 
     @staticmethod
